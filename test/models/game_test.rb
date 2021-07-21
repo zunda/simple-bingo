@@ -34,4 +34,10 @@ class GameTest < ActiveSupport::TestCase
 			game.draw
 		end
 	end
+
+	test "draw returns the drawn number" do
+		game = Game.create
+		number = game.draw
+		assert_equal game.draws[-1], number
+	end
 end

@@ -8,6 +8,8 @@ class Game < ApplicationRecord
 		if balls.empty?
 			raise RuntimeError, "No more numbers to draw"
 		end
-		draws.push balls.sample(random: SecureRandom)
+		ball = balls.sample(random: SecureRandom)
+		draws.push ball
+		return ball
 	end
 end
