@@ -40,4 +40,18 @@ class GameTest < ActiveSupport::TestCase
 		number = game.draw
 		assert_equal game.draws[-1], number
 	end
+
+	test "games are locked to avoid concurrent draws" do
+		game = Game.create
+		uuid = game.id
+
+		g1 = Game.find(uuid)
+		g2 = Game.find(uuid)
+
+		g1.draw
+		g2.draw
+
+		g1.save
+		assert_raises(ActiveRecord::StaleObjectError){ g2.save }
+	end
 end
