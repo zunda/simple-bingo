@@ -6,4 +6,32 @@ class GameTest < ActiveSupport::TestCase
 		assert_match Uuid_regex, game.id, "Primary key is not a UUID"
 		assert_empty game.draws
   end
+
+	test "draws in a Game" do
+		game = Game.create
+		game.draw
+		assert_equal 1, game.draws.size
+		assert_instance_of Integer, game.draws[0]
+		game.draw
+		assert_equal 2, game.draws.size
+		assert_instance_of Integer, game.draws[1]
+	end
+
+	test "never draw the same number twice in a Game" do
+		game = Game.create
+		Game::Numbers.size.times do
+			game.draw
+		end
+		assert_equal game.draws, game.draws.uniq
+	end
+
+	test "avois drawing too many times" do
+		game = Game.create
+		Game::Numbers.size.times do
+			game.draw
+		end
+		assert_raises RuntimeError do
+			game.draw
+		end
+	end
 end
