@@ -24,6 +24,7 @@ class Card < ApplicationRecord
     end
     @current_cells = cells.dup  # opened cells have nil
     @current_draws = 0
+    @current_reaches = 0
   end
 
   def Card.cell_index(col, row)
@@ -35,26 +36,8 @@ class Card < ApplicationRecord
   end
 
   def reaches
-    if @current_draws < game.draws.size
-      open_cells
-    end
-    result = 0
-    scanner = Array(0...Size).freeze
-    if scanner.map{|i| @current_cells[Card.cell_index(i, i)]}.count{|c| c} == 1
-      result += 1
-    end
-    if scanner.map{|i| @current_cells[Card.cell_index(i, 4 - i)]}.count{|c| c} == 1
-      result += 1
-    end
-    scanner.each do |i|
-      if scanner.map{|j| @current_cells[Card.cell_index(i, j)]}.count{|c| c} == 1
-        result += 1
-      end
-      if scanner.map{|j| @current_cells[Card.cell_index(j, i)]}.count{|c| c} == 1
-        result += 1
-      end
-    end
-    return result
+    open_cells if @current_draws < game.draws.size
+    return @current_reaches
   end
 
   def to_s
@@ -79,5 +62,23 @@ class Card < ApplicationRecord
       end
     end
     @current_draws = game.draws.size
+
+    scanner = Array(0...Size).freeze
+
+    @current_reaches = 0
+    if scanner.map{|i| @current_cells[Card.cell_index(i, i)]}.count{|c| c} == 1
+      @current_reaches += 1
+    end
+    if scanner.map{|i| @current_cells[Card.cell_index(i, 4 - i)]}.count{|c| c} == 1
+      @current_reaches += 1
+    end
+    scanner.each do |i|
+      if scanner.map{|j| @current_cells[Card.cell_index(i, j)]}.count{|c| c} == 1
+        @current_reaches += 1
+      end
+      if scanner.map{|j| @current_cells[Card.cell_index(j, i)]}.count{|c| c} == 1
+        @current_reaches += 1
+      end
+    end
   end
 end
