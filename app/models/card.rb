@@ -42,6 +42,9 @@ class Card < ApplicationRecord
     if Array(0...Size).map{|i| @current_cells[Card.cell_index(i,i)]}.count{|c| c} == 1
       result += 1
     end
+    if Array(0...Size).map{|i| @current_cells[Card.cell_index(i,4 - i)]}.count{|c| c} == 1
+      result += 1
+    end
     return result
   end
 
