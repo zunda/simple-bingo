@@ -6,7 +6,7 @@ class CardTest < ActiveSupport::TestCase
     card = Card.create(game: game)
     assert_match Uuid_regex, card.id, "Primary key is not a UUID"
     assert_match Uuid_regex, card.game_id, "Id for the game is not a UUID"
-    assert_equal 25, card.cells.size
+    assert_equal Card::Size * Card::Size, card.cells.size
   end
 
   test "deletion of Cards through a Game" do
@@ -24,5 +24,16 @@ class CardTest < ActiveSupport::TestCase
     numbers = card.cells.compact
     assert_equal 24, numbers.size
     assert_equal 24, numbers.uniq.size
+  end
+
+  test "counts reaches" do
+    game = Game.create
+    card = Card.create(game: game)
+    assert_equal 0, card.reaches
+    game.draw(card.cell_at(0,0))
+    game.draw(card.cell_at(1,1))
+    game.draw(card.cell_at(2,2))
+    game.draw(card.cell_at(3,3))
+    assert_equal 1, card.reaches
   end
 end

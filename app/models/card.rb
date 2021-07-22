@@ -3,7 +3,7 @@ require 'securerandom'
 class Card < ApplicationRecord
   belongs_to :game
 
-  Rows = 5
+  Size = 5
   # https://ja.wikipedia.org/wiki/%E3%83%93%E3%83%B3%E3%82%B4
   Numbers = [
     Array(1..15).freeze,
@@ -19,12 +19,40 @@ class Card < ApplicationRecord
       n = Numbers[col].dup.shuffle(random: SecureRandom)
       0.upto(4) do |row|
         next if col == 2 and row == 2 # free spot
-        cells[col * Rows + row] = n.pop
+        cells[col * Size + row] = n.pop
       end
     end
+    @current_cells = cells.dup
+    @current_draws = 0
+  end
+
+  def Card.cell_index(col, row)
+    return col * Size + row
   end
 
   def cell_at(col, row)
-    return cells[col * Rows + row]
+    return cells[Card.cell_index(col, row)]
+  end
+
+  def reaches
+    if @current_draws < game.draws.size
+      open_cells
+    end
+    result = 0
+    if Array(0...Size).map{|i| @current_cells[Card.cell_index(i,i)]}.compact.size == 1
+      result += 1
+    end
+    return result
+  end
+
+  private
+  def open_cells
+    @current_draws.upto(game.draws.size - 1) do |i|
+      j = cells.index(game.draws[i])
+      if j
+        @current_cells[j] = nil
+      end
+    end
+    @current_draws = game.draws.size
   end
 end
