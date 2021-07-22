@@ -1,6 +1,8 @@
 require 'securerandom'
 
 class Game < ApplicationRecord
+  has_many :cards, dependent: :destroy
+
   Numbers = (1..75).to_a.freeze
 
   def draw
