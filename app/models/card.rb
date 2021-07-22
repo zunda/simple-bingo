@@ -18,11 +18,11 @@ class Card < ApplicationRecord
     0.upto(4) do |col|
       n = Numbers[col].dup.shuffle(random: SecureRandom)
       0.upto(4) do |row|
-        next if col == 2 and row == 2 # free spot
-        cells[col * Size + row] = n.pop
+        next if col == 2 and row == 2 # leave nil for free spot
+        cells[Card.cell_index(col, row)] = n.pop
       end
     end
-    @current_cells = cells.dup
+    @current_cells = cells.dup  # opened cells have nil
     @current_draws = 0
   end
 
@@ -39,7 +39,7 @@ class Card < ApplicationRecord
       open_cells
     end
     result = 0
-    if Array(0...Size).map{|i| @current_cells[Card.cell_index(i,i)]}.compact.size == 1
+    if Array(0...Size).map{|i| @current_cells[Card.cell_index(i,i)]}.count{|c| c} == 1
       result += 1
     end
     return result
