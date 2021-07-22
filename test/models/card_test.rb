@@ -17,4 +17,12 @@ class CardTest < ActiveSupport::TestCase
       game.destroy!
     end
   end
+
+  test "assignment of numbers to cells" do
+    card = Card.create
+    assert_nil card.cell_at(2,2)
+    numbers = card.cells.compact
+    assert_equal 24, numbers.size
+    assert_equal 24, numbers.uniq.size
+  end
 end
