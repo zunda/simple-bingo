@@ -41,12 +41,12 @@ class CardTest < ActiveSupport::TestCase
     assert_equal 2, card.reaches
 
     4.times do |i|
-      game.draw(card.cell_at(1, i))
+      game.draw(card.cell_at(1, i)) unless i == 1 or i == 3
     end
     assert_equal 3, card.reaches
 
     4.times do |i|
-      game.draw(card.cell_at(i, 1))
+      game.draw(card.cell_at(i, 1)) unless i == 1 or i == 3
     end
     assert_equal 4, card.reaches
   end
