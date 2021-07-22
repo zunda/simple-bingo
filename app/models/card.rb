@@ -57,6 +57,19 @@ class Card < ApplicationRecord
     return result
   end
 
+  def to_s
+    open_cells if @current_draws < game.draws.size
+
+    scanner = Array(0...Size).freeze
+    return scanner.map{|row|
+      scanner.map{|col|
+        c = @current_cells[Card.cell_index(col, row)]
+        n = cell_at(col, row)
+        "#{c ? " " : "["}#{n ? "%02d" % n : "--"}#{c ? " " : "]"}"
+      }.join + "\n"
+    }.join + "Reaches: #{@current_reaches}\n"
+  end
+
   private
   def open_cells
     @current_draws.upto(game.draws.size - 1) do |i|
