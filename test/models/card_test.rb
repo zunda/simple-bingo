@@ -42,5 +42,9 @@ class CardTest < ActiveSupport::TestCase
       game.draw(card.cell_at(1, i))
     end
     assert_equal 3, card.reaches
+    4.times do |i|
+      game.draw(card.cell_at(i, 1))
+    end
+    assert_equal 4, card.reaches
   end
 end
