@@ -30,10 +30,9 @@ class CardTest < ActiveSupport::TestCase
     game = Game.create
     card = Card.create(game: game)
     assert_equal 0, card.reaches
-    game.draw(card.cell_at(0,0))
-    game.draw(card.cell_at(1,1))
-    game.draw(card.cell_at(2,2))
-    game.draw(card.cell_at(3,3))
+    4.times do |i|
+      game.draw(card.cell_at(i,i))
+    end
     assert_equal 1, card.reaches
   end
 end
