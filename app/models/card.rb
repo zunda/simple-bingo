@@ -39,11 +39,17 @@ class Card < ApplicationRecord
       open_cells
     end
     result = 0
-    if Array(0...Size).map{|i| @current_cells[Card.cell_index(i, i)]}.count{|c| c} == 1
+    scanner = Array(0...Size).freeze
+    if scanner.map{|i| @current_cells[Card.cell_index(i, i)]}.count{|c| c} == 1
       result += 1
     end
-    if Array(0...Size).map{|i| @current_cells[Card.cell_index(i, 4 - i)]}.count{|c| c} == 1
+    if scanner.map{|i| @current_cells[Card.cell_index(i, 4 - i)]}.count{|c| c} == 1
       result += 1
+    end
+    scanner.each do |col|
+      if scanner.map{|row| @current_cells[Card.cell_index(col, row)]}.count{|c| c} == 1
+        result += 1
+      end
     end
     return result
   end
