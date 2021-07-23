@@ -18,9 +18,14 @@ class GamesController < ApplicationController
 
   def draw
     @game = Game.find(params[:id])
-    @game.draw
 
-    if @game.save
+    begin
+      @game.draw
+      if @game.save
+        redirect_to @game
+      end
+    rescue RuntimeError => e
+      flash[:error] = e.message
       redirect_to @game
     end
   end

@@ -1,4 +1,9 @@
 <h1>ビンゴゲーム</h1>
+<% flash.each do |type, msg| %>
+  <div>
+    <%= msg %>
+  </div>
+<% end %>
 <p>開始時刻: <%= @game.created_at %></p>
 <p>これまで引かれた数字: <%= @game.draws.join(" ") %></p>
 <p><%= form_tag({action: "draw"}, method: "put") do %>
