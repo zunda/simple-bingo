@@ -47,6 +47,10 @@ class Card < ApplicationRecord
   end
 
   def claim
+    open_cells if @current_draws < game.draws.size
+    unless @current_bingo
+      raise RuntimeError, "ビンゴになっていません"
+    end
     self.claimed = true
   end
 

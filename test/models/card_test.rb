@@ -103,4 +103,11 @@ class CardTest < ActiveSupport::TestCase
     end
     assert card.claimed
   end
+
+  test "cannot claim without bingo" do
+    card = Card.create(game: Game.create)
+    assert_raises RuntimeError do
+      card.claim
+    end
+  end
 end
