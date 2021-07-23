@@ -90,4 +90,17 @@ class CardTest < ActiveSupport::TestCase
     end
     assert card.bingo
   end
+
+  test "can claim with bingo" do
+    game = Game.create
+    card = Card.create(game: game)
+    assert_not card.claimed
+    5.times do |i|
+      game.draw(card.cell_at(1, i))
+    end
+    assert_nothing_raised do
+      card.claim
+    end
+    assert card.claimed
+  end
 end

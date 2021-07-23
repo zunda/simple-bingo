@@ -46,6 +46,10 @@ class Card < ApplicationRecord
     return @current_bingo
   end
 
+  def claim
+    self.claimed = true
+  end
+
   def to_s
     open_cells if @current_draws < game.draws.size
 
@@ -56,7 +60,7 @@ class Card < ApplicationRecord
         n = cell_at(col, row)
         "#{c ? " " : "["}#{n ? "%02d" % n : "--"}#{c ? " " : "]"}"
       }.join + "\n"
-    }.join + "Reach: #{@current_reaches}\nBingo: #{@current_bingo}\n"
+    }.join + "Reach: #{@current_reaches}\nBingo: #{@current_bingo}\nClaimed: #{claimed}"
   end
 
   private
