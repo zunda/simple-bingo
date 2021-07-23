@@ -19,7 +19,7 @@ class Card < ApplicationRecord
       n = Numbers[col].dup.shuffle(random: SecureRandom)
       0.upto(4) do |row|
         next if col == 2 and row == 2 # leave nil for free spot
-        cells[Card.cell_index(col, row)] = n.pop
+        self.cells[Card.cell_index(col, row)] = n.pop
       end
     end
     @current_cells = cells.dup  # opened cells have nil
