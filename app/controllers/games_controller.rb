@@ -19,4 +19,13 @@ class GamesController < ApplicationController
       redirect_to @game
     end
   end
+
+  def draw
+    @game = Game.find(params[:id])
+    @game.draw
+
+    if @game.save
+      redirect_to @game
+    end
+  end
 end
