@@ -8,10 +8,6 @@ class GamesController < ApplicationController
     @cards = @game.cards
   end
 
-  def new
-    @game = Game.new
-  end
-
   def create
     @game = Game.create
 
