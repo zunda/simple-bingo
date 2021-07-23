@@ -25,6 +25,7 @@ class Card < ApplicationRecord
     @current_cells = cells.dup  # opened cells have nil
     @current_draws = 0
     @current_reaches = 0
+    @current_bingo = false
   end
 
   def Card.cell_index(col, row)
@@ -40,6 +41,11 @@ class Card < ApplicationRecord
     return @current_reaches
   end
 
+  def bingo
+    open_cells if @current_draws < game.draws.size
+    return @current_bingo
+  end
+
   def to_s
     open_cells if @current_draws < game.draws.size
 
@@ -50,7 +56,7 @@ class Card < ApplicationRecord
         n = cell_at(col, row)
         "#{c ? " " : "["}#{n ? "%02d" % n : "--"}#{c ? " " : "]"}"
       }.join + "\n"
-    }.join + "Reaches: #{@current_reaches}\n"
+    }.join + "Reach: #{@current_reaches}\nBingo: #{@current_bingo}\n"
   end
 
   private
@@ -66,18 +72,30 @@ class Card < ApplicationRecord
     scanner = Array(0...Size).freeze
 
     @current_reaches = 0
-    if scanner.map{|i| @current_cells[Card.cell_index(i, i)]}.count{|c| c} == 1
+    case scanner.map{|i| @current_cells[Card.cell_index(i, i)]}.count{|c| c}
+    when 1
       @current_reaches += 1
+    when 0
+      @current_bingo = true
     end
-    if scanner.map{|i| @current_cells[Card.cell_index(i, 4 - i)]}.count{|c| c} == 1
+    case scanner.map{|i| @current_cells[Card.cell_index(i, 4 - i)]}.count{|c| c}
+    when 1
       @current_reaches += 1
+    when 0
+      @current_bingo = true
     end
     scanner.each do |i|
-      if scanner.map{|j| @current_cells[Card.cell_index(i, j)]}.count{|c| c} == 1
+      case scanner.map{|j| @current_cells[Card.cell_index(i, j)]}.count{|c| c}
+      when 1
         @current_reaches += 1
+      when 0
+        @current_bingo = true
       end
-      if scanner.map{|j| @current_cells[Card.cell_index(j, i)]}.count{|c| c} == 1
+      case scanner.map{|j| @current_cells[Card.cell_index(j, i)]}.count{|c| c}
+      when 1
         @current_reaches += 1
+      when 0
+        @current_bingo = true
       end
     end
   end
