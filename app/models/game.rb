@@ -1,5 +1,7 @@
 require 'securerandom'
 
+class GameError < StandardError; end
+
 class Game < ApplicationRecord
   has_many :cards, dependent: :destroy
 
@@ -9,7 +11,7 @@ class Game < ApplicationRecord
     unless ball
       balls = Numbers - draws
       if balls.empty?
-        raise RuntimeError, "No more numbers to draw"
+        raise GameError, "全部の数字を抽選してしまいました"
       end
       ball = balls.sample(random: SecureRandom)
     end

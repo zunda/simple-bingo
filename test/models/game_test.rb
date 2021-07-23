@@ -30,7 +30,7 @@ class GameTest < ActiveSupport::TestCase
     Game::Numbers.size.times do
       game.draw
     end
-    assert_raises RuntimeError do
+    assert_raises GameError do
       game.draw
     end
   end

@@ -1,5 +1,7 @@
 require 'securerandom'
 
+class CardError < StandardError; end
+
 class Card < ApplicationRecord
   belongs_to :game
 
@@ -49,7 +51,7 @@ class Card < ApplicationRecord
   def claim
     open_cells if @current_draws < game.draws.size
     unless @current_bingo
-      raise RuntimeError, "ビンゴになっていません"
+      raise CardError, "ビンゴになっていません"
     end
     self.claimed = true
   end

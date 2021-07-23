@@ -24,7 +24,7 @@ class GamesController < ApplicationController
       if @game.save
         redirect_to @game
       end
-    rescue RuntimeError => e
+    rescue GameError => e
       flash[:error] = e.message
       redirect_to @game
     end
