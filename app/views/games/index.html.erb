@@ -1,0 +1,10 @@
+<h1>開催中のビンゴゲーム</h1>
+<ul>
+  <% @games.each do |game| %>
+    <li>
+      <a href="/games/<%= game.id %>">
+        <%= game.created_at %>
+      </a>
+    </li>
+  <% end %>
+</ul>

@@ -1,0 +1,8 @@
+<h1>ビンゴゲーム</h1>
+<p><%= @game.created_at %></p>
+<h2>参加中のビンゴカード</h2>
+<ul>
+  <% @cards.each do |card| %>
+    <li><%= card.created_at %></li>
+  <% end %>
+</ul>
