@@ -36,7 +36,11 @@ class Card < ApplicationRecord
   end
 
   def cell_at(col, row)
-    return cells[Card.cell_index(col, row)]
+    return self.cells[Card.cell_index(col, row)]
+  end
+
+  def state_at(col, row)
+    return @current_cells[Card.cell_index(col, row)]
   end
 
   def reaches
@@ -63,7 +67,7 @@ class Card < ApplicationRecord
     scanner = Array(0...Size).freeze
     return scanner.map{|row|
       scanner.map{|col|
-        c = @current_cells[Card.cell_index(col, row)]
+        c = state_at(col, row)
         n = cell_at(col, row)
         "#{c ? " " : "["}#{n ? "%02d" % n : "--"}#{c ? " " : "]"}"
       }.join + "\n"
