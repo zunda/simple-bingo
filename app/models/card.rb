@@ -28,6 +28,7 @@ class Card < ApplicationRecord
     @current_draws = 0
     @current_reaches = 0
     @current_bingo = false
+    open_cells if @current_draws < game.draws.size
   end
 
   def Card.cell_index(col, row)

@@ -19,7 +19,7 @@ class CardTest < ActiveSupport::TestCase
   end
 
   test "assignment of numbers to cells" do
-    card = Card.create
+    card = Card.create(game: Game.create)
     assert_nil card.cell_at(2,2)
     numbers = card.cells.compact
     assert_equal 24, numbers.size
