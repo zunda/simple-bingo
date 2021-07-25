@@ -1,0 +1,16 @@
+<table>
+  <tr><th>B</th><th>I</th><th>N</th><th>G</th><th>O</th></tr>
+  <% 5.times do |row| %>
+    <tr>
+      <% 5.times do |col| %>
+        <td align="middle">
+          <font color="<%= @card.state_at(col, row) ? "black" : "red" %>">
+          <%= @card.cell_at(col, row) || "-" %>
+          </font>
+        </td>
+      <% end %>
+    </tr>
+  <% end %>
+</table>
+<p><%= @card.reaches %>リーチ</p>
+<p>ビンゴ<%= @card.bingo? ? "！" : "ではない" %></p>

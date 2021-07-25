@@ -9,9 +9,10 @@
 <p><%= form_tag({action: "draw"}, method: "put") do %>
   <%= submit_tag("数字を引く") %>
 <% end %></p>
+<p><a href="/games/<%= @game.id %>/newcard">ゲームに参加する</a></p>
 <h2>参加中のビンゴカード</h2>
 <ul>
   <% @cards.each do |card| %>
-    <li><%= card.created_at %></li>
+    <li><%= card.id %>: <%= card.reaches %>リーチ、ビンゴ<%= card.bingo? ? "！" : "ではない" %></li>
   <% end %>
 </ul>
