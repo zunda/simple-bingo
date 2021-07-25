@@ -56,7 +56,7 @@ class Card < ApplicationRecord
     return @current_reaches
   end
 
-  def bingo
+  def bingo?
     update_states if @current_draws < game.draws.size
     return @current_bingo
   end

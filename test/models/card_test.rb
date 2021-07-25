@@ -64,41 +64,41 @@ class CardTest < ActiveSupport::TestCase
   test "detects bingo from top left to bottom right" do
     game = Game.create
     card = Card.create(game: game)
-    assert_not card.bingo
+    assert_not card.bingo?
     5.times do |i|
       game.draw(card.cell_at(i, i)) unless i == 2
     end
-    assert card.bingo
+    assert card.bingo?
   end
 
   test "detects bingo from bottom left to top right" do
     game = Game.create
     card = Card.create(game: game)
-    assert_not card.bingo
+    assert_not card.bingo?
     5.times do |i|
       game.draw(card.cell_at(i, 4 - i)) unless i == 2
     end
-    assert card.bingo
+    assert card.bingo?
   end
 
   test "detects bingo in a row" do
     game = Game.create
     card = Card.create(game: game)
-    assert_not card.bingo
+    assert_not card.bingo?
     5.times do |i|
       game.draw(card.cell_at(i, 1))
     end
-    assert card.bingo
+    assert card.bingo?
   end
 
   test "detects bingo in a column" do
     game = Game.create
     card = Card.create(game: game)
-    assert_not card.bingo
+    assert_not card.bingo?
     5.times do |i|
       game.draw(card.cell_at(1, i))
     end
-    assert card.bingo
+    assert card.bingo?
   end
 
   test "can claim with bingo" do
