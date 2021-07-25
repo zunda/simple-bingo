@@ -16,19 +16,27 @@ class Card < ApplicationRecord
   ].freeze
 
   after_initialize do
-    # populate cells with numbers
-    0.upto(4) do |col|
-      n = Numbers[col].dup.shuffle(random: SecureRandom)
-      0.upto(4) do |row|
-        next if col == 2 and row == 2 # leave nil for free spot
-        self.cells[Card.cell_index(col, row)] = n.pop
-      end
-    end
-    @current_cells = cells.dup  # opened cells have nil
+    # update current states
+    @current_cells = cells.dup  # opened cells become nil
     @current_draws = 0
     @current_reaches = 0
     @current_bingo = false
-    open_cells if @current_draws < game.draws.size
+    update_states if 0 < game.draws.size
+  end
+
+  before_create do
+    # populate cells with numbers
+    0.upto(Size - 1) do |col|
+      n = Numbers[col].dup.shuffle(random: SecureRandom)
+      0.upto(Size - 1) do |row|
+        self.cells[Card.cell_index(col, row)] =
+          (col == (Size - 1)/2 and row == (Size - 1)/2) ?
+            nil # free spot at the center
+          :
+            n.pop
+      end
+    end
+    @current_cells = cells.dup
   end
 
   def Card.cell_index(col, row)
@@ -44,17 +52,17 @@ class Card < ApplicationRecord
   end
 
   def reaches
-    open_cells if @current_draws < game.draws.size
+    update_states if @current_draws < game.draws.size
     return @current_reaches
   end
 
   def bingo
-    open_cells if @current_draws < game.draws.size
+    update_states if @current_draws < game.draws.size
     return @current_bingo
   end
 
   def claim
-    open_cells if @current_draws < game.draws.size
+    update_states if @current_draws < game.draws.size
     unless @current_bingo
       raise CardError, "ビンゴになっていません"
     end
@@ -62,7 +70,7 @@ class Card < ApplicationRecord
   end
 
   def to_s
-    open_cells if @current_draws < game.draws.size
+    update_states if @current_draws < game.draws.size
 
     scanner = Array(0...Size).freeze
     return scanner.map{|row|
@@ -74,8 +82,7 @@ class Card < ApplicationRecord
     }.join + "Reach: #{@current_reaches}\nBingo: #{@current_bingo}\nClaimed: #{claimed}"
   end
 
-  private
-  def open_cells
+  def update_states
     @current_draws.upto(game.draws.size - 1) do |i|
       j = cells.index(game.draws[i])
       if j

@@ -9,6 +9,16 @@ class CardTest < ActiveSupport::TestCase
     assert_equal Card::Size * Card::Size, card.cells.size
   end
 
+  test "consistency of numbers of a Card" do
+    card = Card.create(game: Game.create)
+    card_id = card.id
+    card.save
+
+    c1 = Card.find(card_id).cells.dup
+    c2 = Card.find(card_id).cells.dup
+    assert_equal c1, c2
+  end
+
   test "deletion of Cards through a Game" do
     game = Game.create
     Card.create(game: game)
