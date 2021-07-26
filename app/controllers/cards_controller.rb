@@ -2,10 +2,15 @@ class CardsController < ApplicationController
   def new
     # GET to "games/:id/newcard"
     @game = Game.find(params[:id])
+    cookies[:game_id] = { value: @game.id, expires: 1.week }
   end
 
   def create
-    @game = Game.find(params[:game_id])
+    game_id = cookies[:game_id]
+    unless game_id
+      raise CardError, "ビンゴカードの取得にはクッキーが必要です"
+    end
+    @game = Game.find(game_id)
     @card = Card.create(game: @game)
 
     if @card.save
