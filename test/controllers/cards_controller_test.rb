@@ -27,4 +27,12 @@ class CardsControllerTest < ActionDispatch::IntegrationTest
     end
     assert_equal c.id, cookies[:card_id], "Cookie for card ID is not set"
   end
+
+  test "showing a card without a cookie raises" do
+    g = Game.create
+    c = Card.create(game: g)
+    assert_raises CardError do
+      get card_path
+    end
+  end
 end

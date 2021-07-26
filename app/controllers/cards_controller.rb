@@ -16,6 +16,9 @@ class CardsController < ApplicationController
 
   def show
     card_id = cookies['card_id']
+    unless card_id
+      raise CardError, "ビンゴカードの閲覧にはクッキーが必要です"
+    end
     @card = Card.find(card_id)
     cookies[:card_id] = { value: @card.id, expires: 1.week }
   end
