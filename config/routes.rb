@@ -5,5 +5,5 @@ Rails.application.routes.draw do
   put "games/:id/draw", to: "games#draw"
   get "games/:id/newcard", to: "cards#new"
 
-  resources :cards, only: [:show]
+  get "card", to: "cards#show"
 end

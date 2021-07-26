@@ -5,13 +5,14 @@ class CardsController < ApplicationController
     @card = Card.create(game: @game)
 
     if @card.save
-      cookies.signed[:card_id] = { value: @card.id, expires: 1.week }
-      redirect_to @card
+      cookies[:card_id] = { value: @card.id, expires: 1.week }
+      redirect_to card_path
     end
   end
 
   def show
-    @card = Card.find(params[:id])
-    cookies.signed[:card_id] = { value: @card.id, expires: 1.week }
+    card_id = cookies['card_id']
+    @card = Card.find(card_id)
+    cookies[:card_id] = { value: @card.id, expires: 1.week }
   end
 end
