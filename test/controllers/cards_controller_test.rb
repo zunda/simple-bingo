@@ -1,8 +1,17 @@
 class CardsControllerTest < ActionDispatch::IntegrationTest
+  test "respond with a post form for a new card" do
+    g = Game.create
+    get "/games/#{g.id}/newcard"
+    assert_includes response.body, 'action="/card"'
+    assert_includes response.body, 'name="game_id"'
+    assert_includes response.body, %Q[value="#{g.id}"]
+    assert_includes response.body, 'method="post"'
+  end
+
   test "should create a card" do
     g = Game.create
     assert_difference("Card.count") do
-      get "/games/#{g.id}/newcard"
+      post "/card", params: { :game_id => g.id }
     end
     card_id = cookies['card_id']
     assert card_id, "Cookie for card ID is not set"

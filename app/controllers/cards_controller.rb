@@ -1,7 +1,11 @@
 class CardsController < ApplicationController
   def new
-    # called at /games/:game_id/newcard
+    # GET to "games/:id/newcard"
     @game = Game.find(params[:id])
+  end
+
+  def create
+    @game = Game.find(params[:game_id])
     @card = Card.create(game: @game)
 
     if @card.save
