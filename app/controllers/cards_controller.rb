@@ -7,24 +7,21 @@ class CardsController < ApplicationController
 
   def create
     game_id = cookies[:game_id]
-    unless game_id
-      raise CardError, "ビンゴカードの取得にはクッキーが必要です"
-    end
-    @game = Game.find(game_id)
-    @card = Card.create(game: @game)
+    if game_id.blank?
+      flash[:error] = "ビンゴカードの取得にはクッキーが必要です"
+      redirect_to "/games/#{params[:game_id]}/newcard"
+    else
+      @game = Game.find(game_id)
+      @card = Card.create(game: @game)
 
-    if @card.save
+      @card.save
       cookies[:card_id] = { value: @card.id, expires: 1.week }
       redirect_to card_path
     end
   end
 
   def show
-    card_id = cookies['card_id']
-    unless card_id
-      raise CardError, "ビンゴカードの閲覧にはクッキーが必要です"
-    end
-    @card = Card.find(card_id)
+    @card = Card.find(cookies['card_id'])
     cookies[:card_id] = { value: @card.id, expires: 1.week }
   end
 end
