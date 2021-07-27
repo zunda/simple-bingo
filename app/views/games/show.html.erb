@@ -9,7 +9,12 @@
 <p><%= form_tag({action: "draw"}, method: "put") do %>
   <%= submit_tag("数字を引く") %>
 <% end %></p>
-<p><a href="/games/<%= @game.id %>/newcard">ゲームに参加する</a></p>
+<h2>ゲームに参加する</h2>
+<% newcard_url = game_url + "/newcard" %>
+<svg width="200" height="200">
+  <%= RQRCode::QRCode.new(newcard_url).as_svg(viewbox: true).html_safe %>
+</svg>
+<p><tt><%= link_to(newcard_url, newcard_url) %></tt></p>
 <h2>参加中のビンゴカード</h2>
 <ul>
   <% @cards.each do |card| %>
