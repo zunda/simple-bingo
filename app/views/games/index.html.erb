@@ -8,9 +8,7 @@
 <ul>
   <% @games.each do |game| %>
     <li>
-      <a href="/games/<%= game.id %>">
-        <%= game.created_at %>
-      </a>
+      <%= link_to(game.created_at, game_path(id: game.id)) %>
     </li>
   <% end %>
 </ul>

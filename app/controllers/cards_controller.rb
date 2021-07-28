@@ -9,7 +9,7 @@ class CardsController < ApplicationController
     game_id = cookies[:game_id]
     if game_id.blank?
       flash[:error] = "ビンゴカードの取得にはクッキーが必要です"
-      redirect_to "/games/#{params[:game_id]}/newcard"
+      redirect_to card_new_path(id: params[:game_id])
     else
       @game = Game.find(game_id)
       @card = Card.create(game: @game)
