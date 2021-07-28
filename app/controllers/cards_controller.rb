@@ -16,6 +16,7 @@ class CardsController < ApplicationController
 
       @card.save
       cookies[:card_id] = { value: @card.id, expires: 1.week }
+      cookies.delete :game_id
       redirect_to card_path
     end
   end

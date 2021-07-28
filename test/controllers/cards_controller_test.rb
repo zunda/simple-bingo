@@ -16,6 +16,7 @@ class CardsControllerTest < ActionDispatch::IntegrationTest
       post "/card"
     end
     assert_not cookies['card_id'].blank?, "Cookie for card ID is not set"
+    assert cookies['game_id'].blank?, "Cookie for game ID remains set"
     assert_redirected_to card_path
   end
 
