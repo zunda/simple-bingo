@@ -1,7 +1,7 @@
 class CardsControllerTest < ActionDispatch::IntegrationTest
   test "respond with a post form for card with cookie and hidden param set" do
     g = Game.create
-    get "/games/#{g.id}/newcard"
+    get card_new_path(id: g.id)
     assert_includes response.body, 'action="/card"'
     assert_includes response.body, 'method="post"'
     assert_includes response.body, 'name="game_id"'
