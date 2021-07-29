@@ -17,6 +17,10 @@
 <h2>参加中のビンゴカード</h2>
 <ul>
   <% @cards.each do |card| %>
-    <li><%= card.id %>: <%= card.reaches %>リーチ、ビンゴ<%= card.bingo? ? "！" : "ではない" %></li>
+    <li>
+      <%= card.id %>:
+      <%= card.reaches %>リーチ、
+      <%= card.bingo ? "#{card.bingo}回目の抽選でビンゴ" : "ビンゴではない" %>
+    </li>
   <% end %>
 </ul>

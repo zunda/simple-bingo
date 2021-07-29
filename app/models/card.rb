@@ -21,6 +21,7 @@ class Card < ApplicationRecord
     @current_draws = 0
     @current_reaches = 0
     @current_bingo = false
+    @scanner = Array(0...Size).freeze
     update_states if 0 < game.draws.size
   end
 
@@ -56,7 +57,7 @@ class Card < ApplicationRecord
     return @current_reaches
   end
 
-  def bingo?
+  def bingo
     update_states if @current_draws < game.draws.size
     return @current_bingo
   end
@@ -72,9 +73,9 @@ class Card < ApplicationRecord
   def to_s
     update_states if @current_draws < game.draws.size
 
-    scanner = Array(0...Size).freeze
-    return scanner.map{|row|
-      scanner.map{|col|
+    @scanner = Array(0...Size).freeze
+    return @scanner.map{|row|
+      @scanner.map{|col|
         c = state_at(col, row)
         n = cell_at(col, row)
         "#{c ? " " : "["}#{n ? "%02d" % n : "--"}#{c ? " " : "]"}"
@@ -87,37 +88,49 @@ class Card < ApplicationRecord
       j = cells.index(game.draws[i])
       if j
         @current_cells[j] = nil
+        if not @current_bingo and i >= 3
+          _detect_bingo(i + 1)
+        end
       end
     end
     @current_draws = game.draws.size
+    _count_reaches
+  end
 
-    scanner = Array(0...Size).freeze
-
+  private
+  def _count_reaches
     @current_reaches = 0
-    case scanner.map{|i| @current_cells[Card.cell_index(i, i)]}.count{|c| c}
-    when 1
+    if @scanner.map{|i| @current_cells[Card.cell_index(i, i)]}.count{|c| c} == 1
       @current_reaches += 1
-    when 0
-      @current_bingo = true
     end
-    case scanner.map{|i| @current_cells[Card.cell_index(i, 4 - i)]}.count{|c| c}
-    when 1
+    if @scanner.map{|i| @current_cells[Card.cell_index(i, 4 - i)]}.count{|c| c} == 1
       @current_reaches += 1
-    when 0
-      @current_bingo = true
     end
-    scanner.each do |i|
-      case scanner.map{|j| @current_cells[Card.cell_index(i, j)]}.count{|c| c}
-      when 1
+    @scanner.each do |i|
+      if @scanner.map{|j| @current_cells[Card.cell_index(i, j)]}.count{|c| c} == 1
         @current_reaches += 1
-      when 0
-        @current_bingo = true
       end
-      case scanner.map{|j| @current_cells[Card.cell_index(j, i)]}.count{|c| c}
-      when 1
+      if @scanner.map{|j| @current_cells[Card.cell_index(j, i)]}.count{|c| c} == 1
         @current_reaches += 1
-      when 0
-        @current_bingo = true
+      end
+    end
+  end
+
+  def _detect_bingo(draws)
+    if
+      @scanner.map{|i| @current_cells[Card.cell_index(i, i)]}.count{|c| c} == 0 or
+      @scanner.map{|i| @current_cells[Card.cell_index(i, 4 - i)]}.count{|c| c} == 0
+    then
+      @current_bingo = draws
+      return
+    end
+    @scanner.each do |i|
+      if
+        @scanner.map{|j| @current_cells[Card.cell_index(i, j)]}.count{|c| c} == 0 or
+        @scanner.map{|j| @current_cells[Card.cell_index(j, i)]}.count{|c| c} == 0
+      then
+        @current_bingo = draws
+        return
       end
     end
   end

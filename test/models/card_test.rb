@@ -64,41 +64,41 @@ class CardTest < ActiveSupport::TestCase
   test "detects bingo from top left to bottom right" do
     game = Game.create
     card = Card.create(game: game)
-    assert_not card.bingo?
+    assert_not card.bingo
     5.times do |i|
       game.draw(card.cell_at(i, i)) unless i == 2
     end
-    assert card.bingo?
+    assert card.bingo
   end
 
   test "detects bingo from bottom left to top right" do
     game = Game.create
     card = Card.create(game: game)
-    assert_not card.bingo?
+    assert_not card.bingo
     5.times do |i|
       game.draw(card.cell_at(i, 4 - i)) unless i == 2
     end
-    assert card.bingo?
+    assert card.bingo
   end
 
   test "detects bingo in a row" do
     game = Game.create
     card = Card.create(game: game)
-    assert_not card.bingo?
+    assert_not card.bingo
     5.times do |i|
       game.draw(card.cell_at(i, 1))
     end
-    assert card.bingo?
+    assert card.bingo
   end
 
   test "detects bingo in a column" do
     game = Game.create
     card = Card.create(game: game)
-    assert_not card.bingo?
+    assert_not card.bingo
     5.times do |i|
       game.draw(card.cell_at(1, i))
     end
-    assert card.bingo?
+    assert card.bingo
   end
 
   test "can claim with bingo" do
@@ -119,5 +119,24 @@ class CardTest < ActiveSupport::TestCase
     assert_raises CardError do
       card.claim
     end
+  end
+
+  test "bingo remembers draw count" do
+    game = Game.create
+    c1 = Card.create(game: game)
+    c1.save
+    assert_not c1.bingo
+    5.times do |i|
+      game.draw(c1.cell_at(1, i))
+    end
+    game.save
+    assert_equal 5, c1.bingo
+    c2 = Card.find(c1.id)
+    assert_equal 5, c2.bingo
+    5.times do |i|
+      game.draw(c1.cell_at(0, i))
+    end
+    assert_equal 5, c1.bingo
+    assert_equal 5, c2.bingo
   end
 end

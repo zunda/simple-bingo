@@ -13,4 +13,4 @@
   <% end %>
 </table>
 <p><%= @card.reaches %>リーチ</p>
-<p>ビンゴ<%= @card.bingo? ? "！" : "ではない" %></p>
+<p><%= @card.bingo ? "#{@card.bingo}回目の抽選でビンゴ" : "ビンゴではない" %></p>
