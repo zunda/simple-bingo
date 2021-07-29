@@ -21,12 +21,11 @@ class GamesController < ApplicationController
 
     begin
       @game.draw
-      if @game.save
-        redirect_to @game
-      end
-    rescue GameError => e
-      flash[:error] = e.message
+      @game.save
       redirect_to @game
+    rescue GameError => e
+      @error = e
+      render "games/error", status: :conflict
     end
   end
 end
