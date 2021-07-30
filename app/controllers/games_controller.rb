@@ -13,6 +13,8 @@ class GamesController < ApplicationController
 
     if @game.save
       redirect_to @game
+    else
+      raise RuntimeError  # Should not reach here
     end
   end
 

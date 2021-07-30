@@ -14,10 +14,13 @@ class CardsController < ApplicationController
       @game = Game.find(game_id)
       @card = Card.create(game: @game)
 
-      @card.save
-      cookies[:card_id] = { value: @card.id, expires: 1.week }
-      cookies.delete :game_id
-      redirect_to card_path
+      if @card.save
+        cookies[:card_id] = { value: @card.id, expires: 1.week }
+        cookies.delete :game_id
+        redirect_to card_path
+      else
+        raise RuntimeError  # Should not reach here
+      end
     end
   end
 
