@@ -13,4 +13,35 @@ class GamesControllerTest < ActionDispatch::IntegrationTest
     put game_draw_path(id: g.id)
     assert_response :conflict
   end
+
+  test "offer a present to a card" do
+    g = Game.create
+    c = Card.create(game: g)
+    Game::Numbers.size.times{ g.draw }
+    g.save
+    c.save
+    put game_present_path(id: g.id, card_id: c.id)
+    c.reload
+    assert c.claimed
+  end
+
+  test "raises an error when presenting to invalid card" do
+    g = Game.create
+    c = Card.create(game: g)
+    Game::Numbers.size.times{ g.draw }
+    g.save
+    c.save
+    assert_raises do
+      put game_present_path(id: "x" + g.id, card_id: c.id)
+    end
+  end
+
+  test "raises an error when presenting to card without bingo" do
+    g = Game.create
+    c = Card.create(game: g)
+    g.save
+    c.save
+    put game_present_path(id: g.id, card_id: c.id)
+    assert_response :conflict
+  end
 end

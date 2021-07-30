@@ -20,7 +20,16 @@
     <li>
       <%= card.id %>:
       <%= card.reaches %>リーチ、
-      <%= card.bingo ? "#{card.bingo}回目の抽選でビンゴ" : "ビンゴではない" %>
+      <% if card.bingo then %>
+        <%= "#{card.bingo}回目の抽選でビンゴ" %>
+        <% unless card.claimed then %>
+          <%= form_tag(game_present_path(card_id: card.id), method: "put") do %>
+            <%= submit_tag("賞品を渡す") %>
+          <% end %>
+        <% end %>
+      <% else %>
+        ビンゴではない
+      <% end %>
     </li>
   <% end %>
 </ul>

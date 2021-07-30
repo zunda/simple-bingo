@@ -30,4 +30,20 @@ class GamesController < ApplicationController
       render "games/error", status: :conflict
     end
   end
+
+  def present
+    @game = Game.find(params[:id])
+    @card = Card.find(params[:card_id])
+    if @game.id != @card.game_id
+      raise RecordNotFound
+    end
+    begin
+      @card.claim
+      @card.save
+      redirect_to @game
+    rescue CardError => e
+      @error = e
+      render "games/error", status: :conflict
+    end
+  end
 end
