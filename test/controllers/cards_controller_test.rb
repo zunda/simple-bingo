@@ -13,7 +13,7 @@ class CardsControllerTest < ActionDispatch::IntegrationTest
     g = Game.create
     cookies[:game_id] = g.id
     assert_difference("Card.count") do
-      post "/card"
+      post card_path
     end
     assert_not cookies['card_id'].blank?, "Cookie for card ID is not set"
     assert cookies['game_id'].blank?, "Cookie for game ID remains set"
@@ -23,7 +23,7 @@ class CardsControllerTest < ActionDispatch::IntegrationTest
   test "redirects to card#new when trying to create a card without a cookie" do
     g = Game.create
     cookies[:game_id] = nil
-    post "/card", params: { game_id: g.id }
+    post card_path, params: { game_id: g.id }
     assert_redirected_to "/games/#{g.id}/newcard"
   end
 
