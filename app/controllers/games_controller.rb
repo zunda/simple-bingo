@@ -22,8 +22,9 @@ class GamesController < ApplicationController
     @game = Game.find(params[:id])
 
     begin
-      @game.draw
+      x = @game.draw
       @game.save
+      ActionCable.server.broadcast("game_#{@game.id}_draw", { drawn: x })
       redirect_to @game
     rescue GameError => e
       @error = e

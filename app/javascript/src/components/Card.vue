@@ -6,12 +6,22 @@
 
 <script>
 import { ref } from 'vue'
-import createCardChannel from 'channels/card_channel.js'
+import channelConsumer from 'channels/consumer'
 
 export default {
   name: 'Card',
   setup() {
-    createCardChannel()
+    channelConsumer.subscriptions.create("CardChannel", {
+      connected() {
+        // Called when the subscription is ready for use on the server
+      },
+      disconnected() {
+        // Called when the subscription has been terminated by the server
+      },
+      received(data) {
+        console.log(data)
+      }
+    })
     const message = ref('ビンゴカード')
     
     return {
