@@ -10,4 +10,7 @@ Rails.application.routes.draw do
   get "/games/:id/newcard", to: "cards#new", as: :card_new
   post "/card", to: "cards#create"
   get "/card", to: "cards#show"
+
+  # for debug
+  get "/card/:id", to: "cards#show_with_id", as: :card_with_id
 end

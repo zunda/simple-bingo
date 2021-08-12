@@ -19,7 +19,7 @@
 <ul>
   <% @cards.each do |card| %>
     <li>
-      <%= card.id %>:
+      <%= link_to(card.id, card_with_id_path(card)) %>:
       <%= card.reaches %>リーチ、
       <% if card.bingo then %>
         <%= "#{card.bingo}回目の抽選でビンゴ" %>
