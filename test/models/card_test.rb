@@ -139,4 +139,12 @@ class CardTest < ActiveSupport::TestCase
     assert_equal 5, c1.bingo
     assert_equal 5, c2.bingo
   end
+
+  test "state_at is up to date" do
+    game = Game.create
+    card = Card.create(game: game)
+    assert card.state_at(1, 1)
+    game.draw(card.cell_at(1, 1))
+    assert_not card.state_at(1, 1)
+  end
 end
