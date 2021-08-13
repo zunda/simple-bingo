@@ -55,6 +55,11 @@ class Card < ApplicationRecord
     return @current_cells[Card.cell_index(col, row)]
   end
 
+  def states
+    update_states if @current_draws < game.draws.size
+    return @current_cells
+  end
+
   def reaches
     update_states if @current_draws < game.draws.size
     return @current_reaches

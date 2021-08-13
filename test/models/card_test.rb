@@ -144,7 +144,9 @@ class CardTest < ActiveSupport::TestCase
     game = Game.create
     card = Card.create(game: game)
     assert card.state_at(1, 1)
+    assert card.states[Card.cell_index(1, 1)]
     game.draw(card.cell_at(1, 1))
     assert_not card.state_at(1, 1)
+    assert_not card.states[Card.cell_index(1, 1)]
   end
 end
