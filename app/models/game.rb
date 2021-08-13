@@ -16,6 +16,7 @@ class Game < ApplicationRecord
       ball = balls.sample(random: SecureRandom)
     end
     draws.push ball
+    ActionCable.server.broadcast("game_#{id}_draw", { drawn: ball })
     return ball
   end
 end
