@@ -26,11 +26,16 @@ class CardsController < ApplicationController
 
   def show
     @card = Card.find(cookies['card_id'])
-    cookies[:card_id] = { value: @card.id, expires: 1.week }
+    _show
   end
 
   def show_with_id
     @card = Card.find(params['id'])
+    _show
+  end
+
+  private
+  def _show
     cookies[:card_id] = { value: @card.id, expires: 1.week }
     render "show"
   end
