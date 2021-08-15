@@ -2,7 +2,7 @@ class GamesControllerTest < ActionDispatch::IntegrationTest
   test "draws a number" do
     g = Game.create
     assert_difference "Game.find(g.id).draws.size" do
-      put game_draw_path(id: g.id)
+      post game_draw_path(id: g.id)
     end
   end
 
@@ -10,7 +10,7 @@ class GamesControllerTest < ActionDispatch::IntegrationTest
     g = Game.create
     Game::Numbers.size.times{ g.draw }
     g.save
-    put game_draw_path(id: g.id)
+    post game_draw_path(id: g.id)
     assert_response :conflict
   end
 
@@ -20,7 +20,7 @@ class GamesControllerTest < ActionDispatch::IntegrationTest
     Game::Numbers.size.times{ g.draw }
     g.save
     c.save
-    put game_present_path(id: g.id, card_id: c.id)
+    post game_present_path(id: g.id, card_id: c.id)
     c.reload
     assert c.claimed
   end
@@ -32,7 +32,7 @@ class GamesControllerTest < ActionDispatch::IntegrationTest
     g.save
     c.save
     assert_raises do
-      put game_present_path(id: "x" + g.id, card_id: c.id)
+      post game_present_path(id: "x" + g.id, card_id: c.id)
     end
   end
 
@@ -41,7 +41,7 @@ class GamesControllerTest < ActionDispatch::IntegrationTest
     c = Card.create(game: g)
     g.save
     c.save
-    put game_present_path(id: g.id, card_id: c.id)
+    post game_present_path(id: g.id, card_id: c.id)
     assert_response :conflict
   end
 end

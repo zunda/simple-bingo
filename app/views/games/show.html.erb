@@ -7,7 +7,7 @@
 <% end %>
 <p>開始時刻: <%= @game.created_at %></p>
 <p>これまで引かれた数字: <%= @game.draws.join(" ") %></p>
-<p><%= form_tag(game_draw_path, method: "put") do %>
+<p><%= form_tag(game_draw_path) do %>
   <%= submit_tag("数字を引く") %>
 <% end %></p>
 <h2>ゲームに参加する</h2>
@@ -24,7 +24,7 @@
       <% if card.bingo then %>
         <%= "#{card.bingo}回目の抽選でビンゴ" %>
         <% unless card.claimed then %>
-          <%= form_tag(game_present_path(card_id: card.id), method: "put") do %>
+          <%= form_tag(game_present_path(card_id: card.id)) do %>
             <%= submit_tag("賞品を渡す") %>
           <% end %>
         <% end %>
