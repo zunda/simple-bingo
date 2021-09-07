@@ -22,7 +22,7 @@ export default {
         console.log(data)
       }
     })
-    const message = ref('ビンゴカードのVueアプリ')
+    const message = ref('ビンゴカード')
     
     return {
       message
