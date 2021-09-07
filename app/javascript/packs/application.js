@@ -9,8 +9,8 @@ import * as ActiveStorage from "@rails/activestorage"
 // import "channels"
 // We will import channels from Vue components
 import initVueApp from "@/main.js"
+global.initVueApp = initVueApp
 
-initVueApp()
 Rails.start()
 Turbolinks.start()
 ActiveStorage.start()

@@ -2,15 +2,15 @@ import { createApp } from 'vue'
 import Game from '@/components/Game.vue'
 import Card from '@/components/Card.vue'
 
-export default () => {
-  document.addEventListener('DOMContentLoaded', () => {
-    if (document.getElementById('game-vue')) {
-      const gameApp = createApp(Game)
-      gameApp.mount('#game-vue')
-    }
-    if (document.getElementById('card-vue')) {
-      const cardApp = createApp(Card)
-      cardApp.mount('#card-vue')
-    }
-  })
+export default {
+  game: () => {
+    document.addEventListener('DOMContentLoaded', () => {
+      createApp(Game).mount('#game-vue')
+    })
+  },
+  card: () => {
+    document.addEventListener('DOMContentLoaded', () => {
+      createApp(Card).mount('#card-vue')
+    })
+  }
 }

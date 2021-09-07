@@ -10,7 +10,7 @@ import { ref } from 'vue'
 export default {
   name: 'Game',
   setup() {
-    const message = ref('ビンゴゲーム')
+    const message = ref('ビンゴゲームのVueアプリ')
     
     return {
       message
