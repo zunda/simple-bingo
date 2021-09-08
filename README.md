@@ -8,10 +8,11 @@
 bin/rails test
 ```
 
-ローカルにサーバを走らせる
+ローカルにサーバを走らせる。2つの端末でそれぞれを起動する。
 
 ```
-bin/rails server & bin/webpack-dev-server & wait -n
+bin/rails server
+bin/webpack-dev-server
 ```
 
 ## ライセンス
