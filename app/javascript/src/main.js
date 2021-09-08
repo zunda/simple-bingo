@@ -3,7 +3,7 @@ import Game from '@/components/Game.vue'
 import Card from '@/components/Card.vue'
 
 export default () => {
-  window.addEventListener('load', () => {
+  document.addEventListener('DOMContentLoaded', () => {
     if (document.getElementById('game-vue')) {
       const gameApp = createApp(Game)
       gameApp.mount('#game-vue')
