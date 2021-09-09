@@ -4,7 +4,6 @@
 // that code so it'll be compiled.
 
 import Rails from "@rails/ujs"
-import Turbolinks from "turbolinks"
 import * as ActiveStorage from "@rails/activestorage"
 // import "channels"
 // We will import channels from Vue components
@@ -12,5 +11,4 @@ import initVueApp from "@/main.js"
 
 initVueApp()
 Rails.start()
-Turbolinks.start()
 ActiveStorage.start()
